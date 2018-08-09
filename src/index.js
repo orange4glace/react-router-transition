@@ -1,1 +1,1 @@
-import TransitionRoute from './TransitionRoute';
+export TransitionRoute from './TransitionRoute';
