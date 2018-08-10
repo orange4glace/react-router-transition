@@ -8,10 +8,10 @@ Here're the components this package contains.
 `TransitionRoute` enables you to add a animated transition route easily.  
 Basically, it is same with `Route` except `TransitionRoute` is wrapped by `Transition`.
 ### Usage
-```JSX
+```jsx
 <TransitionRoute path='/path' classNames='fade' timeout={300} component={MyComponent}/>
 ```
-```JSX
+```jsx
 <TransitionRoute path='/path' classNames='fade' timeout={300} render={() => (
   <div> HELLO </div>
 )}/>
@@ -26,7 +26,7 @@ For a original `Switch`, it filters which router to render from its children and
 This causes other routers disappear instantly so exiting animations can not be rendered.  
 To prevent this, `TransitionSwitch` passes `inactive` prop to its children so each child knows its path is matched or not and then finally its render state is controlled by `Transition`.
 ### Usage
-```JSX
+```jsx
 <TransitionSwitch>
   <TransitionRoute path='/path1' classNames='fade' timeout={300} always={MyComponent}/>
   <TransitionRoute path='/path2' classNames='fade' timeout={300} always={() => (
@@ -39,7 +39,7 @@ Same with `Switch`
 
 ## TransitionRouteFactory
 Let's say you have a Route with parameter, something like
-```JSX
+```jsx
 <TransitionRoute path='/product/:product_id' classNames='fade' timeout={300} always={...}/>
 ```
 Now you want `TransitionRoute` to be animated when `:product_id` is changed. (eg: /product/13 -> /prodcut/15)  
@@ -48,10 +48,10 @@ Although parameter is changed, two urls are renders by same `TransitionRoute` co
 To prevent this, `TransitionRouteFactory` is introduced.  
 `TransitionRouteFactory` uses [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group) so it dynamically maintains its single matched child and other animating(which is exit animation) children.
 ### Usage
-```JSX
+```jsx
 <TransitionRouteFactory path='/product/:product_id' classNames='fade' timeout={300} component={Component}/>
 ```
-```JSX
+```jsx
 /* Can be used with TransitionSwitch */
 <TransitionSwitch>
   <TransitionRouteFactory path='/product/:product_id' classNames='fade' timeout={300} component={Component}/>
@@ -70,7 +70,7 @@ Here's the first draft of idea about react-router-transition-pack which is publi
 Feel free to read :) It was very first draft so it has some difference between the code of this repository.  
 
 Currently, the animated-transition JSX template looks like this. (From example)  
-```JSX
+```jsx
 <TransitionGroup>
 <CSSTransition key={location.key} classNames="fade" timeout={300}>
   <Switch location={location}>
@@ -121,7 +121,7 @@ Now here's the difference between `children` prop and `always` prop.
 `always` prop receives them according to its current history state when **route is matched**, if not, it receives them according to its latest matched state.(eg: when **route is not matched**) Additionally, there are additional props, `rawMatch` and `rawLocation`. They are based on current history state, just same with `match` and `location` props of `children`.
 
 Now using `always` prop and `<CSSTransition>` component, implementing transition is fairly easy.
-```JSX
+```jsx
 <Route path='/my_path' always={(props) => (
     <CSSTransition in={!!props.rawMatch} timeout={600} classNames='transition' unmountOnExit>
 	{
@@ -132,7 +132,7 @@ Now using `always` prop and `<CSSTransition>` component, implementing transition
 ```
 
 By nesting them, nested-level transition can also be implemented.
-```JSX
+```jsx
 <Route path='/my_path' always={props => (
     <CSSTransition in={!!props.rawMatch} timeout={600} classNames='transition' unmountOnExit>
 	{
