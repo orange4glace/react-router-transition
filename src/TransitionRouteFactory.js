@@ -3,14 +3,15 @@ import invariant from "invariant";
 import React from "react";
 import PropTypes from "prop-types";
 import { matchPath } from "react-router";
-import { CSSTransition } from "react-transition-group";
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { Route } from 'react-router-dom';
 
 const isEmptyChildren = children => React.Children.count(children) === 0;
 
 /**
  * The public API for matching a single path and rendering.
  */
-class Route extends React.Component {
+class RouteFactory extends React.Component {
   static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
     path: PropTypes.string,
@@ -20,8 +21,8 @@ class Route extends React.Component {
     component: PropTypes.func,
     render: PropTypes.func,
     children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-    always: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     location: PropTypes.object,
+    timeout: PropTypes.number,
     inactive: PropTypes.bool,
   };
 
@@ -52,13 +53,66 @@ class Route extends React.Component {
 
   constructor(props, context) {
     super(props, context);
+
     let match = this.computeMatch(this.props, this.context.router);
+    let inactive = this.props.inactive | this.context.router.inactive;
     this.state = {
       match: match,
-      inactive: this.props.inactive | this.context.router.inactive,
-      savedMatch: match && {...match},
-      savedLocation: match && {...(this.props.location || this.context.router.route.location)}
-    }
+      inactive: inactive,
+      contextState: {
+        routeSlot: (match && !inactive) ? {
+          [match.url]: {
+            location: {...location},
+          }
+        } : {},
+        removeRoute: (matchUrl) => {
+          this.setState((prevState, props) => {
+            let nextSlot = {...prevState.contextState.routeSlot};
+            delete nextSlot[matchUrl];
+            return {
+              contextState: {
+                ...prevState.contextState,
+                routeSlot: nextSlot
+              }
+            }
+          })
+        },
+        addRoute: (matchUrl, location) => {
+          this.setState((prevState, props) => {
+            if (matchUrl in prevState.contextState.routeSlot) return;
+            let nextContextState = {...prevState.contextState};
+            nextContextState.routeSlot = {
+              ...nextContextState.routeSlot,
+              [matchUrl]: {
+                location: {...location},
+                state: 0
+              }
+            };
+            return {
+              contextState: nextContextState
+            }
+          });
+        },
+        tick: (matchUrl, inactive) => {
+          this.setState((prevState, props) => {
+            let nextContextState = {...prevState.contextState};
+            let nextRouteSlot = {...nextContextState.routeSlot};
+            let removes = [];
+            for (let key in nextRouteSlot) {
+              if (!inactive && key == matchUrl) nextRouteSlot[key].state++;
+              else removes.push(key);
+            }
+            for (let key in removes) delete nextRouteSlot[removes[key]];
+            return {
+              contextState: {
+                ...nextContextState,
+                routeSlot: nextRouteSlot
+              }
+            }
+          })
+        }
+      }
+    };
   }
 
   computeMatch(
@@ -103,6 +157,10 @@ class Route extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+    if (this.state.fadingTimer) clearTimeout(this.state.fadingTimer);
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
     warning(
       !(nextProps.location && !this.props.location),
@@ -114,73 +172,36 @@ class Route extends React.Component {
       '<Route> elements should not change from controlled to uncontrolled (or vice versa). You provided a "location" prop initially but omitted it on a subsequent render.'
     );
 
-    let match = this.computeMatch(nextProps, nextContext.router);
+    const match = this.computeMatch(nextProps, nextContext.router);
+    let inactive = nextProps.inactive | nextContext.inactive;
     this.setState({
-      match: match,
-      inactive: nextProps.inactive | nextContext.router.inactive
+      inactive: inactive
     });
 
-    if (match && !nextProps.inactive) {
-      // Clear saved state
-      this.setState({
-        savedMatch: null,
-        savedLocation: null
-      })
-    }
-    else {
-      // Save the last match and location
-      this.setState({
-        savedMatch: {...this.state.match},
-        savedLocation: {...(this.props.location || this.context.router.route.location)}
-      })
-    }
+    const matchUrl = (match && !nextProps.inactive) ? match.url : null;
+    if (matchUrl)
+      this.state.contextState.addRoute(matchUrl, this.props.location || nextContext.router.route.location)
+    this.state.contextState.tick(matchUrl, inactive);
+
   }
 
   render() {
-    const { match } = this.state;
-    const { children, component, render, always } = this.props;
-    const { history, route, staticContext } = this.context.router;
-    const location = this.props.location || route.location;
-    /*const props = {
-      match: match,
-      location: location,
-      inactive, history, staticContext
-    };*/
-    const alwaysProps = {
-      match: this.state.savedMatch || match,
-      location: this.state.savedLocation || location,
-      rawMatch: match,
-      rawLocation: location,
-      inactive: this.state.inactive,
-      history, staticContext
-    };
-
     return (
-      <CSSTransition in={!!alwaysProps.rawMatch && !alwaysProps.inactive} timeout={this.props.timeout} classNames={this.props.classNames} unmountOnExit>
+      <TransitionGroup>
       {
-        state => (
-          /* Render 'Always' part */
-          (component) ?
-            React.createElement(component, alwaysProps) :
-          (render) ?
-            render(alwaysProps) :
-          null
-        )
+        Object.keys(this.state.contextState.routeSlot).map((routeKey, i) => {
+          let route = this.state.contextState.routeSlot[routeKey];
+          return (
+              <CSSTransition key={routeKey} classNames={this.props.classNames} timeout={this.props.timeout}>
+                <Route {...this.props} location={route.location}/>
+              </CSSTransition>
+              
+          )
+        })
       }
-      </CSSTransition>
+      </TransitionGroup>
     )
-
-    // if (component) return match ? React.createElement(component, props) : null;
-
-    // if (render) return match ? render(props) : null;
-
-    // if (typeof children === "function") return children(props);
-
-    // if (children && !isEmptyChildren(children))
-    //   return React.Children.only(children);
-
-    // return null;
   }
 }
 
-export default Route;
+export default RouteFactory;
