@@ -28,8 +28,8 @@ To prevent this, `TransitionSwitch` passes `inactive` prop to its children so ea
 ### Usage
 ```jsx
 <TransitionSwitch>
-  <TransitionRoute path='/path1' classNames='fade' timeout={300} always={MyComponent}/>
-  <TransitionRoute path='/path2' classNames='fade' timeout={300} always={() => (
+  <TransitionRoute path='/path1' classNames='fade' timeout={300} component={MyComponent}/>
+  <TransitionRoute path='/path2' classNames='fade' timeout={300} render={() => (
     <div> HELLO </div>
   )}/>
 </TransitionSwitch>
@@ -40,7 +40,7 @@ Same with `Switch`
 ## TransitionRouteFactory
 Let's say you have a Route with parameter, something like
 ```jsx
-<TransitionRoute path='/product/:product_id' classNames='fade' timeout={300} always={...}/>
+<TransitionRoute path='/product/:product_id' classNames='fade' timeout={300} component={...}/>
 ```
 Now you want `TransitionRoute` to be animated when `:product_id` is changed. (eg: /product/13 -> /prodcut/15)  
 But you can see Route is not animating although parameter has been changed.  
@@ -55,7 +55,7 @@ To prevent this, `TransitionRouteFactory` is introduced.
 /* Can be used with TransitionSwitch */
 <TransitionSwitch>
   <TransitionRouteFactory path='/product/:product_id' classNames='fade' timeout={300} component={Component}/>
-  <TransitionRoute path='/path1' classNames='fade' timeout={300} always={MyComponent}/>
+  <TransitionRoute path='/path1' classNames='fade' timeout={300} component={MyComponent}/>
 </TransitionSwitch>
 ```
 ### Props
