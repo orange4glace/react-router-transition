@@ -1,5 +1,5 @@
 # React Router Transition Pack  
-This package helps you to implement animated-transition with react-router.  
+This package helps you to implement animated-transition with [react-router](https://github.com/ReactTraining/react-router) and [react-transition-group](https://github.com/reactjs/react-transition-group).  
 Currently, [animated transition in react-router](https://reacttraining.com/react-router/web/example/animated-transitions) is very inefficient and has some major problems to use in practice.
 
 Here're the components this package contains.
@@ -8,6 +8,7 @@ Here're the components this package contains.
 `TransitionRoute` enables you to add a animated transition route easily.  
 ### Usage
 ```jsx
+import TransitionRoute from 'react-router-transition-pack'
 <TransitionRoute path='/path' classNames='fade' timeout={300} component={MyComponent}/>
 ```
 ```jsx
@@ -17,8 +18,8 @@ Here're the components this package contains.
 ```
 ### Props
 Any `Route` props can be used except `children`. `children` props will be ignored.  
-`classNames` : same with `classNames` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)  
-`timeout` : same with `timeout` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)
+`classNames` : same with `classNames` of [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)  
+`timeout` : same with `timeout` of [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)
 
 ## TransitionSwitch
 For a original `Switch`, it filters which router to render from its children and renders only that matched router.  
@@ -26,6 +27,8 @@ This causes other routers disappear instantly so exiting animations can not be r
 To prevent this, `TransitionSwitch` passes `inactive` prop to its children so each child knows its path is matched or not and then finally its render state is controlled by `Transition`.
 ### Usage
 ```jsx
+import TransitionSwitch from 'react-router-transition-pack'
+import TransitionRoute from 'react-router-transition-pack'
 <TransitionSwitch>
   <TransitionRoute path='/path1' classNames='fade' timeout={300} component={MyComponent}/>
   <TransitionRoute path='/path2' classNames='fade' timeout={300} render={() => (
@@ -48,6 +51,7 @@ To prevent this, `TransitionRouteFactory` is introduced.
 `TransitionRouteFactory` uses [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group) so it dynamically maintains its single matched child and other animating(which is exit animation) children.
 ### Usage
 ```jsx
+import TransitionRouteFactory from 'react-router-transition-pack'
 <TransitionRouteFactory path='/product/:product_id' classNames='fade' timeout={300} component={Component}/>
 ```
 ```jsx
@@ -59,8 +63,8 @@ To prevent this, `TransitionRouteFactory` is introduced.
 ```
 ### Props
 Any `Route` props can be used except `children`. `children` props will be ignored.  
-`classNames` : same with `classNames` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)  
-`timeout` : same with `timeout` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)  
+`classNames` : same with `classNames` of [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)  
+`timeout` : same with `timeout` of [`CSSTransition`](https://reactcommunity.org/react-transition-group/css-transition)  
 _____________________
 ## Dependencies
 react >= 5.0.0  
@@ -78,7 +82,7 @@ Bug fixed : `TransitionRoute` was displayed as `Route`
 Bug fixed : `TransitionRouteFactory` was displayed as `RouteFactory`  
 _____________________
 ## Internals
-Here's the first draft of idea about react-router-transition-pack which is published at [https://github.com/ReactTraining/react-router/issues/6283](url) although it has been closed in very short time :[  
+Here's the first draft of idea about react-router-transition-pack which is published at [react-router issue](https://github.com/ReactTraining/react-router/issues/6283) although it has been closed in very short time :[  
 Feel free to read :) It was very first draft so it has some difference between the code of this repository.  
 
 Currently, the animated-transition JSX template looks like this. (From example)  
