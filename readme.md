@@ -8,7 +8,7 @@ Here're the components this package contains.
 `TransitionRoute` enables you to add a animated transition route easily.  
 ### Usage
 ```jsx
-import TransitionRoute from 'react-router-transition-pack'
+import { TransitionRoute } from 'react-router-transition-pack'
 <TransitionRoute path='/path' classNames='fade' timeout={300} component={MyComponent}/>
 ```
 ```jsx
@@ -27,8 +27,7 @@ This causes other routers disappear instantly so exiting animations can not be r
 To prevent this, `TransitionSwitch` passes `inactive` prop to its children so each child knows its path is matched or not and then finally its render state is controlled by `Transition`.
 ### Usage
 ```jsx
-import TransitionSwitch from 'react-router-transition-pack'
-import TransitionRoute from 'react-router-transition-pack'
+import { TransitionSwitch, TransitionRoute } from 'react-router-transition-pack'
 <TransitionSwitch>
   <TransitionRoute path='/path1' classNames='fade' timeout={300} component={MyComponent}/>
   <TransitionRoute path='/path2' classNames='fade' timeout={300} render={() => (
@@ -51,7 +50,7 @@ To prevent this, `TransitionRouteFactory` is introduced.
 `TransitionRouteFactory` uses [`TransitionGroup`](https://reactcommunity.org/react-transition-group/transition-group) so it dynamically maintains its single matched child and other animating(which is exit animation) children.
 ### Usage
 ```jsx
-import TransitionRouteFactory from 'react-router-transition-pack'
+import { TransitionRouteFactory } from 'react-router-transition-pack'
 <TransitionRouteFactory path='/product/:product_id' classNames='fade' timeout={300} component={Component}/>
 ```
 ```jsx
