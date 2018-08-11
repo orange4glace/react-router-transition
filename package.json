@@ -1,6 +1,6 @@
 {
   "name": "react-router-transition-pack",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "React module for React Router specialized with Transition",
   "repository": "orange4glace/react-router-transition",
   "license": "MIT",

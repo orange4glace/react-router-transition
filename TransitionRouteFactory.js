@@ -48,10 +48,10 @@ var isEmptyChildren = function isEmptyChildren(children) {
  * The public API for matching a single path and rendering.
  */
 
-var RouteFactory = function (_React$Component) {
-  _inherits(RouteFactory, _React$Component);
+var TransitionRouteFactory = function (_React$Component) {
+  _inherits(TransitionRouteFactory, _React$Component);
 
-  _createClass(RouteFactory, [{
+  _createClass(TransitionRouteFactory, [{
     key: "getChildContext",
     value: function getChildContext() {
       return {
@@ -65,10 +65,10 @@ var RouteFactory = function (_React$Component) {
     }
   }]);
 
-  function RouteFactory(props, context) {
-    _classCallCheck(this, RouteFactory);
+  function TransitionRouteFactory(props, context) {
+    _classCallCheck(this, TransitionRouteFactory);
 
-    var _this = _possibleConstructorReturn(this, (RouteFactory.__proto__ || Object.getPrototypeOf(RouteFactory)).call(this, props, context));
+    var _this = _possibleConstructorReturn(this, (TransitionRouteFactory.__proto__ || Object.getPrototypeOf(TransitionRouteFactory)).call(this, props, context));
 
     var match = _this.computeMatch(_this.props, _this.context.router);
     var inactive = _this.props.inactive | _this.context.router.inactive;
@@ -125,7 +125,7 @@ var RouteFactory = function (_React$Component) {
     return _this;
   }
 
-  _createClass(RouteFactory, [{
+  _createClass(TransitionRouteFactory, [{
     key: "computeMatch",
     value: function computeMatch(_ref2, router) {
       var computedMatch = _ref2.computedMatch,
@@ -196,10 +196,10 @@ var RouteFactory = function (_React$Component) {
     }
   }]);
 
-  return RouteFactory;
+  return TransitionRouteFactory;
 }(_react2.default.Component);
 
-RouteFactory.propTypes = {
+TransitionRouteFactory.propTypes = {
   computedMatch: _propTypes2.default.object, // private, from <Switch>
   path: _propTypes2.default.string,
   exact: _propTypes2.default.bool,
@@ -212,7 +212,7 @@ RouteFactory.propTypes = {
   timeout: _propTypes2.default.number,
   inactive: _propTypes2.default.bool
 };
-RouteFactory.contextTypes = {
+TransitionRouteFactory.contextTypes = {
   router: _propTypes2.default.shape({
     history: _propTypes2.default.object.isRequired,
     route: _propTypes2.default.object.isRequired,
@@ -220,7 +220,7 @@ RouteFactory.contextTypes = {
     inactive: _propTypes2.default.bool
   })
 };
-RouteFactory.childContextTypes = {
+TransitionRouteFactory.childContextTypes = {
   router: _propTypes2.default.object.isRequired
 };
-exports.default = RouteFactory;
+exports.default = TransitionRouteFactory;

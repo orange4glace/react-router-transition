@@ -63,7 +63,7 @@ Any `Route` props can be used except `children`. `children` props will be ignore
 `timeout` : same with `timeout` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)  
 _____________________
 ## Dependencies
-react >= 5.0.0
+react >= 5.0.0  
 react-router >= 4.0.0  
 react-transition-group >= 2.0.0  
 _____________________
@@ -72,7 +72,7 @@ _____________________
 ### 0.0.1
 First commit
 
-### 0.0.7
+### 0.1.0
 Bug fixed : Error (wrong `location` & undefined `match`) when `withRouter` is used.  
 Bug fixed : `TransitionRoute` was displayed as `Route`  
 Bug fixed : `TransitionRouteFactory` was displayed as `RouteFactory`  
