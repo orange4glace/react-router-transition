@@ -1,6 +1,6 @@
 {
   "name": "react-router-transition-pack",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "React module for React Router specialized with Transition",
   "repository": "orange4glace/react-router-transition",
   "license": "MIT",
@@ -23,8 +23,9 @@
     "compile": "babel --presets es2015,stage-0,react -d lib/ src/"
   },
   "peerDependencies": {
-    "react-router": ">=4.3.1",
-    "react-transition-group": ">=2.4.0"
+    "react": ">=15",
+    "react-router": ">=4",
+    "react-transition-group": ">=2"
   },
   "keywords": [
     "react",

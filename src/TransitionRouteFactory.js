@@ -11,7 +11,7 @@ const isEmptyChildren = children => React.Children.count(children) === 0;
 /**
  * The public API for matching a single path and rendering.
  */
-class RouteFactory extends React.Component {
+class TransitionRouteFactory extends React.Component {
   static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
     path: PropTypes.string,
@@ -204,4 +204,4 @@ class RouteFactory extends React.Component {
   }
 }
 
-export default RouteFactory;
+export default TransitionRouteFactory;

@@ -10,7 +10,7 @@ const isEmptyChildren = children => React.Children.count(children) === 0;
 /**
  * The public API for matching a single path and rendering.
  */
-class Route extends React.Component {
+class TransitionRoute extends React.Component {
   static propTypes = {
     computedMatch: PropTypes.object, // private, from <Switch>
     path: PropTypes.string,
@@ -43,8 +43,8 @@ class Route extends React.Component {
       router: {
         ...this.context.router,
         route: {
-          location: this.props.location || this.context.router.route.location,
-          match: this.state.match
+          location: this.state.savedLocation || this.props.location || this.context.router.route.location,
+          match: this.state.savedMatch || this.state.match
         }
       }
     };
@@ -183,4 +183,4 @@ class Route extends React.Component {
   }
 }
 
-export default Route;
+export default TransitionRoute;

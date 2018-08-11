@@ -44,27 +44,27 @@ var isEmptyChildren = function isEmptyChildren(children) {
  * The public API for matching a single path and rendering.
  */
 
-var Route = function (_React$Component) {
-  _inherits(Route, _React$Component);
+var TransitionRoute = function (_React$Component) {
+  _inherits(TransitionRoute, _React$Component);
 
-  _createClass(Route, [{
+  _createClass(TransitionRoute, [{
     key: "getChildContext",
     value: function getChildContext() {
       return {
         router: _extends({}, this.context.router, {
           route: {
-            location: this.props.location || this.context.router.route.location,
-            match: this.state.match
+            location: this.state.savedLocation || this.props.location || this.context.router.route.location,
+            match: this.state.savedMatch || this.state.match
           }
         })
       };
     }
   }]);
 
-  function Route(props, context) {
-    _classCallCheck(this, Route);
+  function TransitionRoute(props, context) {
+    _classCallCheck(this, TransitionRoute);
 
-    var _this = _possibleConstructorReturn(this, (Route.__proto__ || Object.getPrototypeOf(Route)).call(this, props, context));
+    var _this = _possibleConstructorReturn(this, (TransitionRoute.__proto__ || Object.getPrototypeOf(TransitionRoute)).call(this, props, context));
 
     var match = _this.computeMatch(_this.props, _this.context.router);
     _this.state = {
@@ -76,7 +76,7 @@ var Route = function (_React$Component) {
     return _this;
   }
 
-  _createClass(Route, [{
+  _createClass(TransitionRoute, [{
     key: "computeMatch",
     value: function computeMatch(_ref, router) {
       var computedMatch = _ref.computedMatch,
@@ -185,10 +185,10 @@ var Route = function (_React$Component) {
     }
   }]);
 
-  return Route;
+  return TransitionRoute;
 }(_react2.default.Component);
 
-Route.propTypes = {
+TransitionRoute.propTypes = {
   computedMatch: _propTypes2.default.object, // private, from <Switch>
   path: _propTypes2.default.string,
   exact: _propTypes2.default.bool,
@@ -201,7 +201,7 @@ Route.propTypes = {
   location: _propTypes2.default.object,
   inactive: _propTypes2.default.bool
 };
-Route.contextTypes = {
+TransitionRoute.contextTypes = {
   router: _propTypes2.default.shape({
     history: _propTypes2.default.object.isRequired,
     route: _propTypes2.default.object.isRequired,
@@ -209,7 +209,7 @@ Route.contextTypes = {
     inactive: _propTypes2.default.bool
   })
 };
-Route.childContextTypes = {
+TransitionRoute.childContextTypes = {
   router: _propTypes2.default.object.isRequired
 };
-exports.default = Route;
+exports.default = TransitionRoute;

@@ -6,7 +6,6 @@ Here're the components this package contains.
 
 ## TransitionRoute
 `TransitionRoute` enables you to add a animated transition route easily.  
-Basically, it is same with `Route` except `TransitionRoute` is wrapped by `Transition`.
 ### Usage
 ```jsx
 <TransitionRoute path='/path' classNames='fade' timeout={300} component={MyComponent}/>
@@ -62,10 +61,23 @@ To prevent this, `TransitionRouteFactory` is introduced.
 Any `Route` props can be used except `children`. `children` props will be ignored.  
 `classNames` : same with `classNames` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)  
 `timeout` : same with `timeout` of [`Transition`](https://reactcommunity.org/react-transition-group/css-transition)  
-
-
 _____________________
+## Dependencies
+react >= 5.0.0
+react-router >= 4.0.0  
+react-transition-group >= 2.0.0  
+_____________________
+## Version history
 
+### 0.0.1
+First commit
+
+### 0.0.7
+Bug fixed : Error (wrong `location` & undefined `match`) when `withRouter` is used.  
+Bug fixed : `TransitionRoute` was displayed as `Route`  
+Bug fixed : `TransitionRouteFactory` was displayed as `RouteFactory`  
+_____________________
+## Internals
 Here's the first draft of idea about react-router-transition-pack which is published at [https://github.com/ReactTraining/react-router/issues/6283](url) although it has been closed in very short time :[  
 Feel free to read :) It was very first draft so it has some difference between the code of this repository.  
 
